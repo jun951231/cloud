@@ -22,9 +22,9 @@ public class User {
     @Column(length = 10) @NotNull private String password;
     @Column(length = 50) @NotNull private String name;
     @Column(length = 50) @NotNull private String email;
-    @Column(name = "reg_date", length = 20) private Date regDate;
+    @Column(name = "reg_date", length = 20) @NotNull private String regDate;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<Article> articleList = new ArrayList<>();
 
 }
