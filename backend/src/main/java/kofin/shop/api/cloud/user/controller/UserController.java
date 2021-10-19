@@ -21,7 +21,7 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserDto user){
         String returnUser = userService.login(user.getUsername(), user.getPassword());
-        System.out.println("리액트에서 넘어온 정보: "+user.toString());
+        System.out.println("리액트에서 넘어온 정보: "+returnUser.toString());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
