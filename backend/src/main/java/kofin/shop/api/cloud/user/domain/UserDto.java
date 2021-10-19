@@ -5,7 +5,7 @@ import lombok.*;
 import java.io.Serializable;
 
 @Getter @Setter @ToString
-public class UserSerializer implements Serializable {
+public class UserDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private long userId;
@@ -16,7 +16,7 @@ public class UserSerializer implements Serializable {
     private String regDate;
 
     @Builder
-    UserSerializer(long userId, String username, String password, String name, String email, String regDate){
+    UserDto(long userId, String username, String password, String name, String email, String regDate){
         this.userId = userId;
         this.username = username;
         this.password = password;
