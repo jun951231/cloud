@@ -4,47 +4,85 @@ import axios from 'axios';
 
 
 export default function UserModify() {
-  const [pwd, setPwd] = useState('')
-  const sessionUser = JSON.parse(localStorage.getItem('sessionUser'))
   const history = useHistory()
-  const SERVER = 'http://localhost:8080'
-  
-  const handleChange = e => {
-    setPwd(e.target.value)
-  }
-  const handleClick = e => {
-    e.preventDefault()
-    if(sessionUser.password === pwd){
-      axios.delete(`${SERVER}/users/${sessionUser.userId}`)
-      .then(res => {
-        console.log(res.data)
-        localStorage.setItem('sessionUser', '')
-        history.push('/')
-      })
-      .catch(err => console.log(err))
-    }else{
-      alert('입력된 비밀번호가 틀립니다')
-      document.getElementById('password').value = ''
+
+    const sessionUser = JSON.parse(localStorage.getItem('sessionUser')); 
+    const [modify, setModify] = useState({
+        userId: sessionUser.userId,
+        username:sessionUser.username, 
+        password:sessionUser.password, 
+        email:sessionUser.email, 
+        name:sessionUser.name, 
+        regDate: sessionUser.regDate
+    })
+    const {userId, username, password, email, name} = modify
+    const handleChange = e => {
+        const { value, name } = e.target
+        setModify({
+            ...modify,
+            [name] : value
+        })
     }
     
+    const handleSubmit = e => {
+        e.preventDefault()
+        const modifyRequest = {...modify}
+        alert(`회원수정 정보: ${JSON.stringify(modifyRequest)}`)
+        UserModify(modifyRequest)
+        .then(res =>{
+            alert('회원 정보 수정 성공')
+            localStorage.setItem('sessionUser', JSON.stringify(res.data))
+            history.push("/users/detail")
+        })
+        .catch(err =>{
+            alert(`회원수정 실패 : ${err}`)
+        })
+
   }
+
   return (
     <div>
-      <h1>회원탈퇴</h1>
-      <form method="DELETE">
-    <ul>
-        <li>
+         <h1>회원정보 수정</h1>
+    <form onSubmit={handleSubmit} method='PUT'>
+        <ul>
+            <li>
               <label>
-                    <span>사용자아이디 : {sessionUser.username} </span>
+                    <span>회원번호 : {sessionUser.userId} </span>
                 </label>
             </li>
-        <li><label for="pw">비밀번호 확인</label>
-        <input type="password" id="password" name="password" onChange={handleChange}/></li>
-        <li><input type="submit" value="탈퇴요청" onClick={handleClick}/></li>
-        <li><input type="button" value="탈퇴취소" onClick={e => history.push("/users/detail")}/></li>
-    </ul>
-</form>
+            <li>
+                <label>
+                    <span>아이디 : {sessionUser.username} </span>
+                </label>
+            </li>
+            <li>
+                <label>
+                    이메일 : <input type="email" id="email" name="email" placeholder={sessionUser.email}
+                                  value={email}
+                                 onChange={handleChange}/>
+                </label>
+            </li>
+            <li>
+                <label>
+                    비밀 번호 : <input type="password" id="password" name="password" placeholder={sessionUser.password} 
+                    value={password}
+                    onChange={handleChange}/>
+                </label>
+            </li>
+            <li>
+                <label>
+                    이름 : <input type="text" id="name" name="name" placeholder={sessionUser.name}
+                    value={name}
+                    onChange={handleChange}/>
+                </label>
+            </li>
+           
+            <li>
+                <input type="submit" value="수정확인"/>
+            </li>
 
+        </ul>
+    </form>
     </div>
   );
 }

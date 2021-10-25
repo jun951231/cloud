@@ -17,13 +17,12 @@ export default function UserAdd() {
         })
     }
     
-    const userJoin = joinRequest => 
-                axios.post(`${SERVER}/users`, JSON.stringify(joinRequest),{headers})
+    
    
     const handleSubmit = e => {
         e.preventDefault()
         const joinRequest = {...join}
-        alert(`회원가입 정보: ${JSON.stringify(joinRequest)}`)
+
         userJoin(joinRequest)
         .then(res =>{
             alert('회원가입 성공')
