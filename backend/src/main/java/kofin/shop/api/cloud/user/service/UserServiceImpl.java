@@ -4,15 +4,15 @@ import kofin.shop.api.cloud.user.domain.User;
 import kofin.shop.api.cloud.user.domain.UserDto;
 import kofin.shop.api.cloud.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+
 
     @Override
     public Optional<User> findByID(long userId) {
@@ -20,9 +20,12 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String login(String username, String password) {
+    public Optional<User> login(String username, String password) {
         return userRepository.login(username, password);
     }
 
-
+    @Override
+    public void join(User user) {
+        userRepository.save(user);
+    }
 }

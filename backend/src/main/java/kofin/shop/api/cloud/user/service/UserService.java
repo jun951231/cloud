@@ -1,11 +1,11 @@
 package kofin.shop.api.cloud.user.service;
 
 import kofin.shop.api.cloud.user.domain.User;
-import kofin.shop.api.cloud.user.domain.UserDto;
 
 import java.util.Optional;
 
 public interface UserService {
     Optional<User> findByID(long userId);
-    String login(String username, String password);
+    Optional<User> login(String username, String password);
+    void join(User user);
 }

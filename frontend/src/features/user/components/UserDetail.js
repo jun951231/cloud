@@ -1,70 +1,72 @@
-import React, { useState } from 'react';
-
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 export default function UserDetail() {
+    const SERVER = 'http://localhost:8080'
+    const history = useHistory()
+    const [detail, setDetail] = useState({
+        userId:'', username:'', password:'', email:'', name:'', regDate: new Date().toLocaleDateString()
+    })
+    
+    const fetchOne = () => {
+        const sessionUser = JSON.parse(localStorage.getItem('sessionUser'))
+        axios.get(`${SERVER}/users/${sessionUser.userId}`)
+        .then(res => {
+            setDetail(res.data)
+        })
+        .catch(err => {
+            alert(`${err}`)
+        })
+    }
+    useEffect(() => {
+        fetchOne()
+    }, [])
+
+    const logout = e => {
+        e.preventDefault()
+        localStorage.setItem('sessionUser','')
+        history.push('/')
+    }
 
   return (
     <div>
-      <figure>
-        <img  alt=""/>
-        <figcaption>오늘은 남은 인생이 첫째되는 시작날</figcaption>
-    </figure>
-    <h1>jun il</h1>
-    <p>이메일 : jun951321@gmail.com</p>
-    <h2>Who I am?</h2>
-    <p></p>
-    <hr/>
-    <h2>Github</h2>
-    <ul>
-        <li>GitHub</li>
-    </ul>
-    <hr/>
-    <h2>Skills</h2>
-    <ul>
-        <li>사용 언어
-            <ul>                
-                <li>JAVA</li>
-                <li>Python</li>
-                <li>MySQL</li>
-            </ul>
-        </li><br/>
-        <li>사용 툴
-            <ul>               
-                <li>PyCharm</li>
-                <li>Docker</li>
-                <li>GitHub</li>
-                <li>Visual Studio</li>
-                <li>Spring Boot</li>
-            </ul>
-        </li>
-    </ul>
-    <br/><hr/>
-    <h2>Academic</h2>
-    <table border="5">
-        <caption>학력 사항</caption>
-        <thead>
-            <tr>
-                <th>출신 학교</th>
-                <th>전공</th>
-                <th>기간</th>
-                <th>졸업구분</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>강원애니고등학교</td>
-                <td>(해당사항 없음)</td>
-                <td>2012.2 ~ 2014.2</td>
-                <td>졸업</td>
-            </tr>
-            <tr>
-                <td>대진대대학교</td>
-                <td>문예창작학과</td>
-                <td>2014.2 ~ 2021.8</td>
-                <td>졸업</td>
-            </tr>
-        </tbody>
-    </table>
+         <h1>회원정보</h1>
+    
+        <ul>
+            <li>
+                <label>
+                    <span>회원번호 : {detail.userId} </span>
+                </label>
+            </li>
+            <li>
+                <label>
+                    <span>아이디 : {detail.username} </span>
+                </label>
+            </li>
+            <li>
+                <label>
+                <span>이메일 :  {detail.email}  </span>
+                </label>
+            </li>
+            <li>
+                <label>
+                    <span>비밀 번호 :  *******  </span>
+                </label>
+            </li>
+            <li>
+                <label>
+                <span>이름 : {detail.name} </span>
+                </label>
+            </li>
+           
+            <li>
+                <input type="button" value="회원정보수정" onClick={()=> history.push('/users/modify')}/>
+            </li>
+            <li>
+                <input type="button" value="로그아웃" onClick={logout}/>
+            </li>
+        </ul>
     </div>
   );
 }

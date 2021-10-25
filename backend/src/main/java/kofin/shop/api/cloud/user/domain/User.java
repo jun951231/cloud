@@ -14,17 +14,15 @@ import java.util.List;
 @Data @Component @Table(name="Users")
 public class User {
     @Id
-    @Column(name="user_id")
-    @GeneratedValue
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
-
-    @Column(length = 50) @NotNull private String userName;
-    @Column(length = 10) @NotNull private String password;
-    @Column(length = 50) @NotNull private String name;
-    @Column(length = 50) @NotNull private String email;
-    @Column(name = "reg_date", length = 20) @NotNull private String regDate;
-
-    @OneToMany(mappedBy = "user")
+    @Column private @NotNull String username;
+    @Column private @NotNull String password;
+    @Column private @NotNull String name;
+    @Column private @NotNull String email;
+    @Column(name = "reg_date") @NotNull private String regDate;
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Article> articleList = new ArrayList<>();
 
 }
