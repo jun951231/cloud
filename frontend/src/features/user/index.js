@@ -8,7 +8,7 @@ export {default as UserRemove} from 'features/user/components/UserRemove'
 export {default as UserListForm} from 'features/user/components/UserListForm'
 
 // user reducer
-export {default as userSlice} from 'features/user/reducer/userSlice'
+export {default as userReducer} from 'features/user/reducer/userSlice'
 
 // user api
 export {default as userApi} from 'features/user/reducer/userApi'
